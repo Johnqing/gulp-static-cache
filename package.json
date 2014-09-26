@@ -1,16 +1,17 @@
 {
-  "name": "gulp-file-concat",
+  "name": "gulp-static-cache",
   "version": "0.0.1",
-  "description": "cancat css/js",
+  "description": "cache css/js",
   "keywords": [
     "gulpplugin",
-    "cancat",
+    "cache",
+    "html",
     "css",
     "js"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Johnqing/gulp-file-concat.git"
+    "url": "https://github.com/Johnqing/gulp-static-cache.git"
   },
   "author": {
     "name": "Liu Qing",
@@ -27,16 +28,10 @@
   },
   "devDependencies": {},
   "license": "MIT",
-  "readme": "# gulp-file-concat\n\n> 文件合并，js通过document.write，css通过@import\n\n#### options\nType: `object`\n\nAll `false` by default.\n\n- {STRING} **relativeUrls** - 合并js时，需要传入该参数\n\n## Example\nindex.js:\n\n```javascript\n(function() {\n\tdocument.write('<script src=\"a.js\"><\\/script>');\n\tdocument.write('<script src=\"b.js\"><\\/script>');\n}());\n```\n\nindex.css:\n\n```css\n@import url(\"a.css\");\n@import url(\"b.css\");\n```\n\ngulpfile.js:\n\n```javascript\nvar gulp = require('gulp');\nvar fileconcat = require('gulp-file-concat');\n\ngulp.task('default', function() {\n  gulp.src('index.js')\n    .pipe(fileconcat({\n        relativeUrls: './'\n    }))\n    .pipe(gulp.dest('build/'));\n\n  gulp.src('index.css')\n      .pipe(fileconcat())\n      .pipe(gulp.dest('build/'));\n\n});\n\n```",
+  "readme": "",
   "readmeFilename": "readme.md",
   "bugs": {
-    "url": "https://github.com/Johnqing/gulp-file-concat/issues"
+    "url": "https://github.com/Johnqing/gulp-static-cache/issues"
   },
-  "homepage": "https://github.com/Johnqing/gulp-file-concat",
-  "_id": "gulp-file-concat@0.0.1",
-  "dist": {
-    "shasum": "41fcf98f25fd6af6231f9426288e85b1d224ff35"
-  },
-  "_from": "gulp-file-concat@*",
-  "_resolved": "http://r.cnpmjs.org/gulp-file-concat/download/gulp-file-concat-0.0.1.tgz"
+  "homepage": "https://github.com/Johnqing/gulp-static-cache"
 }

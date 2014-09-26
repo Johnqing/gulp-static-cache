@@ -20,29 +20,34 @@ module.exports = function (options) {
 	var relativeUrls = options.relativeUrls || './';
 	var regx = options.patterns || /[^'";\(]+?\.(?:png|jpe?g|gif|ico|cur|css|js)(?:\?\w+\=\w+)?/ig;
 
-    return through.obj(function (file, enc, cb){
-	    if (file.isNull()) {
-		    this.push(file);
-		    return cb();
-	    }
+	return through.obj(function (file, enc, cb){
+		if (file.isNull()) {
+			this.push(file);
+			return cb();
+		}
 
-	    if (file.isStream()) {
-		    this.emit('error', new gutil.PluginError('gule-file-concat', 'Streaming not supported'));
-		    return cb();
-	    }
+		if (file.isStream()) {
+			this.emit('error', new gutil.PluginError('gule-file-concat', 'Streaming not supported'));
+			return cb();
+		}
 
-	    var content = String(file.contents.toString());
+		var content = String(file.contents.toString());
 		var filePaths = content.match(regx);
+		// 防止出现null的情况
+		if(!filePaths) return cb();
 
-	    filePaths.forEach(function(f){
+		filePaths.forEach(function(f){
 			var truePath = path.join(relativeUrls, f);
-		    var fContent = fs.readFileSync(truePath).toString();
-		    var hash = stringMd5(fContent);
-		    var ext = path.extname(truePath);
-		    var filename = path.basename(truePath, ext) + hash + ext;
-		    console.log(filename);
-	    });
+			var fContent = fs.readFileSync(truePath).toString();
+			var hash = stringMd5(fContent);
+			var ext = path.extname(truePath);
+			var filename = path.basename(f, ext) + ext + '?v='+hash;
+			content = content.replace(f, path.dirname(f) + '/' + filename);
+		});
+		file.contents = new Buffer(content);
+		this.push(file);
+		cb();
 
-    });
+	});
 
 };
