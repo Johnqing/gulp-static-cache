@@ -5,7 +5,7 @@ var through = require('through2');
 var Buffer = require('buffer').Buffer;
 var path = require('path');
 var fs = require('fs');
-var File = gutil.File;
+var PluginName = 'gulp-static-cache';
 
 function md5(str) {
 	return crypto.createHash('md5').update(str).digest('hex');
@@ -27,7 +27,7 @@ module.exports = function (options) {
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gule-file-concat', 'Streaming not supported'));
+			this.emit('error', new gutil.PluginError(PluginName, 'Streaming not supported'));
 			return cb();
 		}
 
@@ -38,7 +38,13 @@ module.exports = function (options) {
 
 		filePaths.forEach(function(f){
 			var truePath = path.join(relativeUrls, f);
-			var fContent = fs.readFileSync(truePath).toString();
+			var fContent = '';
+			try{
+				var fContent = fs.readFileSync(truePath).toString();
+			}catch (err){
+				this.emit('error', new gutil.PluginError(PluginName, f + 'is not find!'));
+				return;
+			}
 			var hash = stringMd5(fContent);
 			var ext = path.extname(truePath);
 			var filename = path.basename(f, ext) + ext + '?v='+hash;
