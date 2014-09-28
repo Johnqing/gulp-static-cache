@@ -32,17 +32,20 @@ module.exports = function (options) {
 			return cb();
 		}
 
-		var content = String(file.contents.toString());
+		var content = file.contents.toString();
 		var filePaths = content.match(regx);
 		// 防止出现null的情况
 		if(!filePaths) return cb();
 
 		filePaths.forEach(function(f){
 			var truePath = path.join(relativeUrls, f);
+			if(f.substring(0, 3) == '../'){
+				var fPath = file.path.substring(0, file.path.lastIndexOf(path.sep));
+				truePath = path.join(fPath, f);
+			}
 			try{
 				var fContent = fs.readFileSync(truePath).toString();
 			}catch (err){
-				console.log(f + ' is not found!');
 				return;
 			}
 			var hash = stringMd5(fContent);
