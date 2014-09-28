@@ -21,13 +21,14 @@ module.exports = function (options) {
 	var regx = options.patterns || /[^'";\(]+?\.(?:png|jpe?g|gif|ico|cur|css|js)(?:\?\w+\=\w+)?/ig;
 
 	return through.obj(function (file, enc, cb){
+		var self = this;
 		if (file.isNull()) {
 			this.push(file);
 			return cb();
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError(PluginName, 'Streaming not supported'));
+			self.emit('error', new gutil.PluginError(PluginName, 'Streaming not supported'));
 			return cb();
 		}
 
@@ -38,11 +39,10 @@ module.exports = function (options) {
 
 		filePaths.forEach(function(f){
 			var truePath = path.join(relativeUrls, f);
-			var fContent = '';
 			try{
 				var fContent = fs.readFileSync(truePath).toString();
 			}catch (err){
-				this.emit('error', new gutil.PluginError(PluginName, f + 'is not find!'));
+				console.log(f + ' is not found!');
 				return;
 			}
 			var hash = stringMd5(fContent);
