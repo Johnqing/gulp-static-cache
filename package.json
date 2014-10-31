@@ -1,6 +1,6 @@
 {
   "name": "gulp-static-cache",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "cache css/js/html",
   "keywords": [
     "gulpplugin",

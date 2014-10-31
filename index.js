@@ -39,6 +39,7 @@ module.exports = function (options) {
 
 		filePaths.forEach(function(f){
 			var truePath = path.join(relativeUrls, f);
+			truePath = truePath.replace(/(\?)\w+\=.*/, '');
 			if(f.substring(0, 3) == '../'){
 				var fPath = file.path.substring(0, file.path.lastIndexOf(path.sep));
 				truePath = path.join(fPath, f);
