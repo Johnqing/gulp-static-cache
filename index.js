@@ -6,6 +6,7 @@ var Buffer = require('buffer').Buffer;
 var path = require('path');
 var fs = require('fs');
 var PluginName = 'gulp-static-cache';
+var glob = require("glob");
 
 function md5(str) {
     return crypto.createHash('md5').update(str).digest('hex');
@@ -46,6 +47,8 @@ module.exports = function (options) {
         filePaths.forEach(function(f){
             var truePath = path.join(relativeUrls, f);
             truePath = delVersion(truePath);
+            truePath = glob.sync(truePath).toString();
+
             if(f.substring(0, 3) == '../'){
                 var fPath = file.path.substring(0, file.path.lastIndexOf(path.sep));
                 truePath = path.join(fPath, f);

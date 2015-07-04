@@ -1,6 +1,6 @@
 {
   "name": "gulp-static-cache",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "cache css/js/html",
   "keywords": [
     "gulpplugin",
@@ -23,7 +23,8 @@
     "node": ">= 0.9"
   },
   "dependencies": {
-    "gulp-util": "^2.2.5",
+      "glob": "^5.0.13",
+      "gulp-util": "^2.2.5",
     "through2": ">=0.6.1"
   },
   "devDependencies": {},
